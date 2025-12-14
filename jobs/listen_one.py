@@ -1,10 +1,10 @@
 import asyncio
 import yaml
-from services.discord_bot import MyBot
-from dotenv import load_dotenv
 import sys
 import discord
-import os
+from services.discord_bot import MyBot
+from dotenv import load_dotenv
+from services.path_helper import get_file
 
 load_dotenv()
 
@@ -21,7 +21,7 @@ intents.messages = True
 intents.message_content = True
 
 # Load bot info from YAML
-BOTS_YAML = os.path.join(os.path.dirname(__file__), "../data/bots.yaml")
+BOTS_YAML = get_file("data", "bots.yaml")
 with open(BOTS_YAML) as f:
     data = yaml.safe_load(f)
 

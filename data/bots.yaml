@@ -1,7 +1,9 @@
 bots:
   - name: Amberlynn Reid
     token_env: BOT1_TOKEN
+    weight: 0.8
   - name: Terry A. Davis
     token_env: BOT2_TOKEN
+    weight: 0.4
 #  - name: BotThree
 #    token_env: BOT3_TOKEN

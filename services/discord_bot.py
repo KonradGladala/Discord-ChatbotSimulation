@@ -15,15 +15,13 @@ class MyBot:
             intents=intents
         )
 
+        # Register setup hook for cogs and command syncing
         self.bot.setup_hook = self._setup_hook
         self.bot.event(self.on_ready)
 
     async def _setup_hook(self):
         await self.bot.add_cog(SetupCog(self.bot, self.name))
-
-        # 🌍 global commands (multi-guild)
-        await self.bot.tree.sync()
-
+        await self.bot.tree.sync()  # sync commands globally
         logging.info(f"{self.name}: commands synced")
 
     async def on_ready(self):
