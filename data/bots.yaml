@@ -1,7 +1,7 @@
 bots:
-  - name: BotOne
+  - name: Amberlynn Reid
     token_env: BOT1_TOKEN
-#  - name: BotTwo
-#    token_env: BOT2_TOKEN
+  - name: Terry A. Davis
+    token_env: BOT2_TOKEN
 #  - name: BotThree
 #    token_env: BOT3_TOKEN
