@@ -20,7 +20,8 @@ class SetupCog(commands.Cog):
             bot_name=self.bot_name,
             guild_id=interaction.guild.id,
             main_channel_id=interaction.channel.id,
-            all_channel_ids=[c.id for c in interaction.guild.text_channels]
+            all_channel_ids=[c.id for c in interaction.guild.text_channels],
+            irritation=0.0
         )
 
         await interaction.response.send_message(

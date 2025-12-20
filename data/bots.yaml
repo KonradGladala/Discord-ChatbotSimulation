@@ -1,9 +1,54 @@
 bots:
   - name: Amberlynn Reid
-    token_env: BOT1_TOKEN
-    weight: 0.8
+    data: 
+      token_env: BOT1_TOKEN
+      weight: 0.5
+      prompts:
+        BASE_PROMPT: AMBER_BASE_PROMPT
+        RARE_PROMPT: AMBER_RARE_PROMPT
   - name: Terry A. Davis
-    token_env: BOT2_TOKEN
-    weight: 0.4
+    data:
+      token_env: BOT2_TOKEN
+      weight: 0.5
+      prompts:
+        BASE_PROMPT: TERRY_BASE_PROMPT
+        RARE_PROMPT: TERRY_RARE_PROMPT
+  - name: Boogie2988
+    data:
+      token_env: BOT3_TOKEN
+      weight: 0.5
+      prompts:
+        BASE_PROMPT: BOOGIE_BASE_PROMPT
+        RARE_PROMPT: BOOGIE_RARE_PROMPT
+  - name: DarksydePhil
+    data:
+      token_env: BOT4_TOKEN
+      weight: 0.5
+      prompts:
+        BASE_PROMPT: DSP_BASE_PROMPT
+        RARE_PROMPT: DSP_RARE_PROMPT
+  - name: FoodieBeauty
+    data:
+      token_env: BOT5_TOKEN
+      weight: 0.5
+      prompts:
+        BASE_PROMPT: FOODIE_BASE_PROMPT
+        RARE_PROMPT: FOODIE_RARE_PROMPT
+  - name: WingsOfRedemption
+    data: 
+      token_env: BOT6_TOKEN
+      weight: 0.5
+      prompts:
+        BASE_PROMPT: WINGS_BASE_PROMPT
+        RARE_PROMPT: WINGS_RARE_PROMPT
+  - name: Dr. Matthew Harris
+    data: 
+      token_env: BOT7_TOKEN
+      weight: 0.5
+      prompts:
+        BASE_PROMPT: HARRIS_BASE_PROMPT
+        RARE_PROMPT: HARRIS_RARE_PROMPT
+
+
 #  - name: BotThree
 #    token_env: BOT3_TOKEN

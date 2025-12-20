@@ -16,7 +16,7 @@ for bot_info in data["bots"]:
 
     # Start each bot in its own process
     p = subprocess.Popen(
-        [sys.executable, script_path, bot_info["token_env"]],
+        [sys.executable, script_path, bot_info["data"]["token_env"]],
         stdout=None,   # or redirect to a file for logs
         stderr=None
     )
