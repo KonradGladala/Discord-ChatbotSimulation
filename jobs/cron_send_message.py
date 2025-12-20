@@ -3,10 +3,10 @@ import yaml
 import asyncio
 import random
 import logging
-import discord
+from repositories.discord_bot_repository import DiscordBotRepository
 from services.ai_service import AIMessageService
 from services.discord_bot import MyBot
-from repositories.discord_bot_repository import DiscordBotRepository
+from services.discord_service import get_last_messages, send_message_to_main_channels
 from services.path_helper import get_file
 from dotenv import load_dotenv
 
@@ -21,57 +21,29 @@ with open(BOTS_YAML) as f:
 
 bots_list = data["bots"]
 
-async def send_message(bot_info, message):
-    intents = discord.Intents.default()
-    intents.guilds = True
-    intents.messages = True
-    intents.message_content = True
-
-    bot = MyBot(name=bot_info["name"], token_env=bot_info["token_env"], intents=intents)
-    logging.info(f"{bot.name}: starting bot...")
-
-    # Login and connect manually
-    await bot.bot.login(bot.token)
-    connect_task = asyncio.create_task(bot.bot.connect())
-
-    # Wait until the bot is ready
-    await bot.bot.wait_until_ready()
-
-    # Your DB work
-    repo = await DiscordBotRepository().create()
-    guild_channels = await repo.get_guild_channels(bot.name)
-
-    for gc in guild_channels:
-        channel_id = gc["main_channel_id"]
-        try:
-            channel = await bot.bot.fetch_channel(channel_id)
-            await channel.send(message)
-            logging.info(f"{bot.name}: message sent to {channel.name} ({channel.id})")
-        except discord.NotFound:
-            logging.warning(f"{bot.name}: channel {channel_id} not found")
-        except discord.Forbidden:
-            logging.warning(f"{bot.name}: missing permissions for channel {channel_id}")
-        except discord.HTTPException as e:
-            logging.error(f"{bot.name}: failed to send message to channel {channel_id}: {e}")
-
-    # Disconnect cleanly
-    await bot.bot.close()
-    await connect_task  # ensure connect task is awaited
-    logging.info(f"{bot.name}: disconnected")
-
 async def main():
-    # Weighted random selection
-    weights = [bot.get("weight", 1.0) for bot in bots_list]
+    # Weighted random selection of bot
+    weights = [bot.get("data", {}).get("weight", 1.0) for bot in bots_list]
     selected_bot = random.choices(bots_list, weights=weights, k=1)[0]
+    logging.info(f"Selected bot: {selected_bot['name']} (weight={selected_bot['data'].get('weight', 1.0)})")
 
-    logging.info(f"Selected bot: {selected_bot['name']} (weight={selected_bot.get('weight', 1.0)})")
-    ai_service = AIMessageService()
+    repo = await DiscordBotRepository().create()
+    ai_service = AIMessageService(repo)
 
-    logging.info("Generating AI message...")
-    ai_message = await ai_service.generate_message("Write 3 words only")
-    logging.info("AI message generated.")
-    
-    await send_message(selected_bot, ai_message)
+    # Use the new MyBot context manager
+    async with MyBot(selected_bot["name"], selected_bot["data"]["token_env"], selected_bot["data"]["prompts"]) as bot_conn:
+        # Fetch last 5 messages for context
+        conversation_context = await get_last_messages(bot_conn.bot, limit=8)
+
+        # Generate AI message using conversation context
+        logging.info("Generating AI message...")
+        ai_message = await ai_service.generate_message(
+            bot_conn,
+            conversation_context=conversation_context
+        )
+        logging.info("AI message generated.")
+
+        await send_message_to_main_channels(bot_conn.bot, bot_conn.name, ai_message, bot_conn.guild_channels)
 
 if __name__ == "__main__":
     asyncio.run(main())

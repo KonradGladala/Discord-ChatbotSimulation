@@ -25,11 +25,18 @@ BOTS_YAML = get_file("data", "bots.yaml")
 with open(BOTS_YAML) as f:
     data = yaml.safe_load(f)
 
-bot_info = next((b for b in data["bots"] if b["token_env"] == token_env), None)
+bot_info = next((b for b in data["bots"] if b["data"]["token_env"] == token_env), None)
 if not bot_info:
     print(f"No bot info found for {token_env}")
     sys.exit(1)
 
 # Run bot
-bot = MyBot(name=bot_info["name"], token_env=token_env, intents=intents)
-asyncio.run(bot.start())
+bot = MyBot(name=bot_info["name"], token_env=token_env, prompts=bot_info["data"]["prompts"], intents=intents)
+
+async def main():
+    # Start bot and keep it running indefinitely
+    async with bot:
+        await bot.cleanup_deleted_guilds()
+        await asyncio.Event().wait()  # keep running
+
+asyncio.run(main())
