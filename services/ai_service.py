@@ -48,7 +48,7 @@ class AIMessageService:
         def _summarize_context():
             summary_prompt = f"""
 
-            You are {selected_bot.name} in this conversation.
+            You are a narrator. You are responsible for making this conversation engaging and drama-filled.
             Summarize the conversation that was had so far in up to 4-8 sentences.
 
             STRICT RULES:
@@ -59,8 +59,9 @@ class AIMessageService:
             {"- 5. Note that you spoke last and list the key points you mentioned. Focus on yourself, Clearly note that YOU SPOKE LAST, so you should build upon your last point and lay out the last point you were making." if last_speaker_rule else "- 5. Focus on the latest message in the conversation. Make it clear what is being discussed and highlight that as the main point, so the next reply will naturally continue the conversation."}
 
             Additionally:
-            - PRIORITIZE developing the current topic. Only suggest a pivot to a new topic if the same topic has been repeated multiple times or cannot be expanded naturally or the conversation is getting boring.
-            - If suggesting a pivot, clearly note which topic to stop talking about and what new topic or angle to move to.
+            - Develop the current topic. But suggest a pivot to a new topic if the same topic has been repeated multiple times or cannot be expanded naturally or the conversation is getting boring.
+            - If everyone is agreeing with eachother, that is boring, suggest a point of contention or drama to spice things up, there SHOULD be DRAMA.
+            - If suggesting a pivot, clearly note which topic to stop talking about and what new topic or angle to move to but do not frame it like it has already been talked about.
             - Include cues for natural continuation, such as asking a question, adding personal experience, or expanding on details.
             - If a new topic is introduced (e.g. exes, drama, personal history, whatever), explicitly state what details are expected next (who, what happened, when, or why), so the next reply must expand instead of reintroducing the topic.
 
