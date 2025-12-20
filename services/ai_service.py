@@ -122,7 +122,7 @@ class AIMessageService:
                 model=MODEL_ID,
                 messages=[
                     {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": f"{selected_bot.basePrompt}, your current irritation is: {irritation_string}, optional guidance: {extra_guidance}. The current summary of the conversation so far: {summary}, this is a DISCORD conversation, keep messages 2-4 sentence long. Using the summary as context, write a new Discord message in your own words, STAY TRUE TO YOUR CHARACTER. Do NOT reuse exact phrases or sentences from previous messages or the summary. Keep it short, natural, your reply should naturally continue the conversation and focus on the latest point in the summary or any points that are addressed at you, remember YOU ARE {selected_bot.name} so ACT LIKE IT."}
+                    {"role": "user", "content": f"{selected_bot.basePrompt}, your current irritation is: {irritation_string}, optional guidance for what to do next: {extra_guidance}. The current narration of the conversation so far, this is IMPORTANT: {summary}. This is a DISCORD conversation, keep messages 2-4 sentence long. Using the narration as context, write a new Discord message in your own words, STAY TRUE TO YOUR CHARACTER. Do NOT reuse exact phrases or sentences from narration. Keep it short, natural, your reply should naturally continue the conversation and focus on the latest point in the narration or any points that are addressed at you, remember YOU ARE {selected_bot.name} so ACT LIKE IT."}
                 ],
                 extra_body={
                     "venice_parameters": {
